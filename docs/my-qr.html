@@ -22,6 +22,10 @@
       <h2>นี่คือ QR ของคุณ</h2>
       <br>
       <div id="qrcode"></div>
+      <br>
+      <a id='scan-btn' class='btn btn-primary' href='#/'>สแกน QR Code</a>
+      <br>
+      <span id='scan-output'>...</span>
 
     </div>
 
@@ -39,11 +43,21 @@
         liffId: myLiffId
       })
       .then(() => {
+        // generate QR Code
         liff.getProfile().then(profile => {
           // show display name
           $('#profile_name').html(profile.displayName);
           // render QR code
           new QRCode($("#qrcode")[0], profile.userId);
+        });
+
+        // QR Code scanner
+        $('#scan-btn').click(_ => {
+          if (liff.scanCode) {
+            liff.scanCode().then(result => {
+              $('#scan-output').html(result.value)
+            });
+          }
         });
       })
       .catch((err) => {
