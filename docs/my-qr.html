@@ -37,28 +37,36 @@
 
     <script>
 
-      const myLiffId = "1655960051-7zAYvvox";
+      const myLiffId = "1655960051-QxD0992X";
 
       liff.init({
         liffId: myLiffId
       })
       .then(() => {
-        // generate QR Code
-        liff.getProfile().then(profile => {
-          // show display name
-          $('#profile_name').html(profile.displayName);
-          // render QR code
-          new QRCode($("#qrcode")[0], profile.userId);
-        });
 
-        // QR Code scanner
-        $('#scan-btn').click(_ => {
-          if (liff.scanCode) {
-            liff.scanCode().then(result => {
-              $('#scan-output').html(result.value)
-            });
-          }
-        });
+        // must logged in first, by pass if open from LINE
+        if (!liff.isLoggedIn()) {
+          liff.login()
+        }
+        else {
+          // generate QR Code
+          liff.getProfile().then(profile => {
+            // show display name
+            $('#profile_name').html(profile.displayName);
+            // render QR code
+            new QRCode($("#qrcode")[0], profile.userId);
+          });
+
+          // QR Code scanner
+          $('#scan-btn').click(_ => {
+            if (liff.scanCode) {
+              liff.scanCode().then(result => {
+                $('#scan-output').html(result.value)
+              });
+            }
+          });
+        }
+
       })
       .catch((err) => {
         alert(err)
