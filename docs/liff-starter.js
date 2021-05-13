@@ -148,6 +148,17 @@ function registerButtonHandlers() {
         }
     });
 
+    // get id token
+    document.getElementById('getIDToken').addEventListener('click', function() {
+        if (!liff.isLoggedIn() && !liff.isInClient()) {
+            alert('To get an id token, you need to be logged in. Please tap the "login" button below and try again.');
+        } else {
+            const idToken = liff.getIDToken();
+            document.getElementById('idTokenField').textContent = idToken;
+            toggleAccessToken();
+        }
+    });
+
     // get profile call
     document.getElementById('getProfileButton').addEventListener('click', function() {
         liff.getProfile().then(function(profile) {
