@@ -72,6 +72,12 @@ function initializeApp() {
     } else {
         document.getElementById('liffLogoutButton').disabled = true;
     }
+
+    // print query string
+    if (location.search) {
+      let msg = location.search.substr(1).split('&').map(r => r.split('=')).join(' # ');
+      document.getElementById('debug_console').innerHTML = msg;
+    }
 }
 
 /**
